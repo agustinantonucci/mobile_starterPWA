@@ -56,7 +56,7 @@ const InfoCliente = ({ clienteSelect }) => {
         <Card title="CONTACTOS" className="card_contactos">
             <div className="div_contacto_lista">
               {contact && contact.length !== 0 ? (contact.map((contact) => (
-                <Card className="border">
+                <Card className="border" key={contact.con_id}>
                   <Card className="cards_internas">
                     <div
                       style={{

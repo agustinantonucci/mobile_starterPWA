@@ -6,7 +6,7 @@
 }
 
 .card_empresa{
-    width: 90vw;
+    width: 90%;
 }
 
 .p_info{
@@ -57,6 +57,7 @@
 .card_contactos {
     margin-bottom: -1rem;
     height: 100%;
+    width: 90%;
 }
 .card_contactos .adm-card-header-title{
     font-size: 20px;
@@ -66,9 +67,8 @@
     display: block;
     overflow-y: scroll;
     scroll-behavior: smooth;
-    width: 90vw;
+    width: 100%;
     height: 100%;
-    
 }
 
 .div_contacto2 .adm-card-body{

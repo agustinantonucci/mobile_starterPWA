@@ -1,14 +1,7 @@
 /* eslint-disable no-self-assign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import {
-  Button,
-  Form,
-  Modal,
-  Selector,
-  SpinLoading,
-  TextArea,
-} from "antd-mobile";
+import { Button, Form, Modal, Selector, TextArea } from "antd-mobile";
 import React, { useContext, useEffect, useState } from "react";
 import "./NuevaTarea.css";
 import { CheckOutline } from "antd-mobile-icons";
@@ -20,7 +13,7 @@ import { GET_TIPO_TAREA } from "../../../graphql/queries/TipoTarea";
 import { GET_TIPO_ORIGEN } from "../../../graphql/queries/TipoOrigen";
 import { NEW_TAREA } from "../../../graphql/mutations/tareas";
 import { useHistory } from "react-router-dom";
-import { sleep } from "antd-mobile/es/utils/sleep";
+import moment from "moment";
 
 const NuevaTarea = () => {
   let history = useHistory();
@@ -53,11 +46,6 @@ const NuevaTarea = () => {
       setClientes(data.getClientesLimitResolver);
     }
   }, [data]);
-
-
-  // useEffect(() => {
-  //   console.log("Busqueda: ", buscador);
-  // }, [buscador]);
 
   const handleSelect = (value) => {
     setBuscador(value.target.value);
@@ -99,13 +87,6 @@ const NuevaTarea = () => {
     }
   }, [dataTipoTarea]);
 
-  // useEffect(() => {
-  //   console.log(tiposTareas);
-  // }, [tiposTareas]);
-
-  // const handleSelectTT = ({ value }) => {
-  //   console.log(value);
-  // };
   //TODO FIN SECCION DE ELEGIR TIPO TAREA
   //TODO INICIO SECCION DE ELEGIR ORIGEN TAREA
   const [tiposOrigenes, setTiposOrigenes] = useState([]);
@@ -117,13 +98,6 @@ const NuevaTarea = () => {
     }
   }, [dataTipoOrigen]);
 
-  // useEffect(() => {
-  //   console.log(tiposOrigenes);
-  // }, [tiposOrigenes]);
-
-  // const handleSelectO = ({ value }) => {
-  //   console.log(value);
-  // };
   //TODO FIN SECCION DE ELEGIR ORIGEN TAREA
 
   const prioridad = [
@@ -169,7 +143,6 @@ const NuevaTarea = () => {
 
   const [newTareaIframeResolver] = useMutation(NEW_TAREA, {
     onCompleted: () => {
-
       pollTareas.inicial(1000);
       setTimeout(() => {
         pollTareas.stop();
@@ -180,7 +153,7 @@ const NuevaTarea = () => {
           <CheckOutline
             style={{
               fontSize: 64,
-              color: "var(--adm-color-primary)",
+              color: "#55b30c",
             }}
           />
         ),
@@ -217,14 +190,18 @@ const NuevaTarea = () => {
 
     let inputAdjunto = null;
 
-    // console.log("tarea: ",inputTarea,"nota: ", inputNota,"adjunto: ", inputAdjunto);
-
-    // escribe el resolver
     newTareaIframeResolver({
       variables: { inputTarea, inputNota, inputAdjunto, usuAsig: userId },
     });
   };
 
+  const handleHora = (hora) => {
+    let horaFormato = hora
+    if(hora.length<5) {
+      horaFormato = "0" + hora;
+    } 
+    return horaFormato;
+  }
   //* FIN SECCION CARGAR UNA NUEVA TAREA
 
   return (
@@ -257,20 +234,22 @@ const NuevaTarea = () => {
             clientes.map((cliente) => (
               <>
                 {buscador !== "" ? (
-                    <div className="div_clienteSelect_btn">
-                      <input
-                        className="select_nueva_tarea input_cliente"
-                        type="text"
-                        onClick={(value) => handleSelect(value)}
-                        value={cliente.cli_nombre}
-                      />
+                  <div className="div_clienteSelect_btn" key={cliente.cli_id}>
+                    <input
+                      className="select_nueva_tarea input_cliente"
+                      type="text"
+                      onClick={(value) => handleSelect(value)}
+                      defaultValue={cliente.cli_nombre}
+                    />
+                    {ocultarC && (
                       <Button
                         className="btn_cliente"
                         onClick={() => handleLimpiar()}
                       >
                         X
                       </Button>
-                    </div>
+                    )}
+                  </div>
                 ) : (
                   ""
                 )}
@@ -293,6 +272,7 @@ const NuevaTarea = () => {
               tiposTareas.map((tipoTarea) => ({
                 label: tipoTarea.tip_desc,
                 value: tipoTarea.tip_id,
+                key: tipoTarea.tip_id,
               }))
             }
             // onChange={handleSelectTT}
@@ -307,6 +287,7 @@ const NuevaTarea = () => {
               tiposOrigenes.map((tipoOrigen) => ({
                 label: tipoOrigen.ori_desc,
                 value: tipoOrigen.ori_id,
+                key: tipoOrigen.ori_id,
               }))
             }
             // onChange={handleSelectO}
@@ -324,7 +305,11 @@ const NuevaTarea = () => {
               width: "50%",
             }}
           >
-            <Form.Item label="Vencimiento" name="tar_vencimiento">
+            <Form.Item
+              label="Vencimiento"
+              name="tar_vencimiento"
+              initialValue={moment().format("YYYY-MM-DD")}
+            >
               <input className="input-fechaHora" type="date" />
             </Form.Item>
           </div>
@@ -333,7 +318,7 @@ const NuevaTarea = () => {
               width: "50%",
             }}
           >
-            <Form.Item label="Hora" name="tar_horavencimiento">
+            <Form.Item label="Hora" name="tar_horavencimiento" initialValue={handleHora(moment().format("LT"))}>
               <input className="input-fechaHora" type="time" />
             </Form.Item>
           </div>

@@ -63,34 +63,6 @@
     font-size: 16px;
 }
 
-/* .lista-tarea{
-    box-sizing : border-box; 
-    margin : 0px 8px 8px 0px; 
-    color : rgb(124, 179, 5); 
-    font-variant : tabular-nums; 
-    list-style : outside none none; 
-    font-feature-settings : "tnum"; 
-    display : inline-block; 
-    height : 22.2456px; 
-    padding : 0px 7px; 
-    font-size : 12px; 
-    line-height : 20px; 
-    white-space : nowrap; 
-    background : rgb(252, 255, 230) none repeat scroll 0% 0% / auto padding-box border-box; 
-    border : 1.12281px solid rgb(234, 255, 143); 
-    border-radius : 2px; 
-    opacity : 1; 
-    transition : all 0.3s ease 0s; 
-    border-color : rgb(234, 255, 143); 
-    margin-bottom : 8px; 
-
-} */
-
-/* .asunto{
-    font-weight: bold;
-    font-size: 16px;
-    color: rgb(62, 62, 62);
-} */
 
 .borde_contenedor{
     border: solid 1px #f4f4f4;

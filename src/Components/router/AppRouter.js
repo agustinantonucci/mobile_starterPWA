@@ -15,7 +15,7 @@ import PublicRoute from "./PublicRoute";
 
 const AppRouter = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/app">
       <Switch>
         <PublicRoute exact path="/" component={LoginView}/>
 

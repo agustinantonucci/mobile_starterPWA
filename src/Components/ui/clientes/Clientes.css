@@ -1,11 +1,15 @@
 @import "antd-mobile/bundle/css-vars-patch.css";
 
-.div_empresa{
-    color: #56b43c;
-    font-weight: bold;
-    padding-left: 12px;
+.div_empresa {
+  color: #56b43c;
+  font-weight: bold;
+  padding-left: 12px;
 }
 
 .adm-list-item {
-    padding-left: 0px;
+  padding-left: 0px;
+}
+
+.adm-search-bar-active .adm-search-bar-input-box {
+  border-color: #56b43c;
 }

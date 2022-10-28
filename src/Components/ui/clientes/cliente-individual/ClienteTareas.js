@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useQuery } from "@apollo/client";
 import { SwipeAction } from "antd-mobile";
 import moment from "moment";
@@ -9,10 +10,10 @@ import { TareaNegocio } from "../../tareaNegocio/TareaNegocio";
 
 export const ClienteTareas = ({ cliente }) => {
 
-  const { userId } = useContext(GlobalContext);
+  const { userId, setPollTareasClientes } = useContext(GlobalContext);
   const [tareasXCliente, setTareasXCliente] = useState();
 
-  const { loading, error, data } = useQuery(GET_TAREAS, {
+  const { loading, error, data, startPolling, stopPolling } = useQuery(GET_TAREAS, {
     variables: {
       idUsuario: userId,
       filtroFecha: "",
@@ -42,9 +43,17 @@ export const ClienteTareas = ({ cliente }) => {
 
   useEffect(() => {
     if (data) {
-      ordenarDatos(JSON.parse(data.getTareasIframeResolver));
+      setPollTareasClientes({inicial:startPolling, stop:stopPolling})
+      ordenarDatos(JSON.parse(data.getTareasIframeResolver).tareas);
     }
   }, [data]);
+
+  useEffect(() => {
+    startPolling(1000);
+    setTimeout(() => {
+      stopPolling();
+    }, 1000);
+  }, [data])
 
   return (
     <QueryResult loading={loading} error={error} data={tareasXCliente}>
@@ -55,7 +64,7 @@ export const ClienteTareas = ({ cliente }) => {
         {tareasXCliente &&
           tareasXCliente.map((tarea) => {
             return (
-              <SwipeAction className="swipe_clienteTarea">
+              <SwipeAction className="swipe_clienteTarea" key={tarea.tar_id}>
                 <TareaNegocio tarea={tarea} origen="ListaTareas" />
               </SwipeAction>
             );

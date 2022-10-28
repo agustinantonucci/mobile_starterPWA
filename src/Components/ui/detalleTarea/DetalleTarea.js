@@ -8,10 +8,8 @@ import "./DetalleTarea.css";
 import moment from "moment";
 import { GlobalContext } from "../../context/GlobalContext";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_CLIENTE } from "../../../graphql/queries/Cliente";
 import { GET_TIPO_TAREA } from "../../../graphql/queries/TipoTarea";
 import Select from "react-select";
-import { GET_TIPO_ORIGEN } from "../../../graphql/queries/TipoOrigen";
 import Note from "../note/Note";
 import { UPDATE_TAREA } from "../../../graphql/mutations/tareas";
 
@@ -20,35 +18,43 @@ const DetalleTarea = () => {
 
   const location = useLocation();
 
-  const history = useHistory()
+  const history = useHistory();
 
   const [tarea, setTarea] = useState(location.state);
 
   const [idSelector, setIdSelector] = useState(tarea.pri_id);
 
-  const [clientes, setClientes] = useState([]);
-
-  const [buscador, setBuscador] = useState(tarea.cli_nombre);
-  const [ocultarC, setOcultarC] = useState(true);
-  const [limpiar, setLimpiar] = useState(false);
-
   const [file, setFile] = useState({});
   const [fList, setFlist] = useState([]);
 
+  const [hora, setHora] = useState(moment(
+    tarea.tar_horavencimiento,
+    "HH:mm:ss"
+  ).format("LT"))
+
+  const handleHora = (hora) => {
+    let horaFormato = hora
+    if(hora.length<5) {
+      horaFormato = "0" + hora;
+    } 
+    return horaFormato;
+  }
+
   const [updateTareaResolver] = useMutation(UPDATE_TAREA, {
     onCompleted: () => {
-
-      pollTareas.inicial(1000);
-      setTimeout(() => {
-        pollTareas.stop();
-      }, 1000);
+      if (pollTareas) {
+        pollTareas.inicial(1000);
+        setTimeout(() => {
+          pollTareas.stop();
+        }, 1000);
+      }
 
       Modal.alert({
         header: (
           <CheckOutline
             style={{
               fontSize: 64,
-              color: "var(--adm-color-primary)",
+              color: "#56B43C",
             }}
           />
         ),
@@ -58,66 +64,6 @@ const DetalleTarea = () => {
       });
     },
   });
-
-  const handleChange = (value) => {
-    if (value.target.value === "" || value.target.value === null) {
-    }
-    setBuscador(value.target.value);
-  };
-
-  const { loading, error, data } = useQuery(GET_CLIENTE, {
-    variables: {
-      input: buscador.length > 2 ? buscador : "",
-      idUsuario: userId,
-    },
-  });
-
-  useEffect(() => {
-    if (data) {
-      let dataClientes = [];
-
-      data.getClientesLimitResolver.map((cliente) => {
-        if (cliente.cli_id != tarea.cli_id) dataClientes.push(cliente);
-      });
-
-      if (buscador === tarea.cli_nombre) {
-        dataClientes.push({
-          __typename: "Clientes",
-          cli_email: null,
-          cli_id: tarea.cli_id.toString(),
-          cli_nombre: tarea.cli_nombre,
-          cli_telefono1: null,
-        });
-      }
-
-      setClientes(dataClientes);
-    }
-  }, [data]);
-
-  const handleSelect = (value) => {
-    setBuscador(value.target.value);
-
-    if (ocultarC === true) {
-      setOcultarC(false);
-    }
-
-    if (ocultarC === false) {
-      setOcultarC(true);
-    }
-  };
-
-  const handleLimpiar = (value) => {
-    if (limpiar === false) {
-      setLimpiar(true);
-      setOcultarC(false);
-    }
-    if (limpiar === true) {
-      setLimpiar(false);
-      setOcultarC(false);
-    }
-
-    setBuscador("");
-  };
 
   const [tiposTareas, setTiposTareas] = useState([]);
 
@@ -132,16 +78,6 @@ const DetalleTarea = () => {
       setTiposTareas(dataTipoTarea.getTiposTareaResolver);
     }
   }, [dataTipoTarea]);
-
-  const [tiposOrigenes, setTiposOrigenes] = useState([]);
-
-  const { data: dataTipoOrigen } = useQuery(GET_TIPO_ORIGEN, {});
-
-  useEffect(() => {
-    if (dataTipoOrigen) {
-      setTiposOrigenes(dataTipoOrigen.getOrigenesResolver);
-    }
-  }, [dataTipoOrigen]);
 
   const prioridad = [
     {
@@ -185,8 +121,6 @@ const DetalleTarea = () => {
   const [form] = Form.useForm();
 
   const onFinish = (v) => {
-
-
     let inputAdjunto;
     if (Object.keys(file).length) {
       const extension = file.originalname.split(".")[1];
@@ -223,6 +157,10 @@ const DetalleTarea = () => {
       inputAdjunto = null;
     }
 
+    if (inputNota.not_desc.length === 0 || tarea.not_desc === "<p><br></p>") {
+      inputNota = null;
+    }
+
     updateTareaResolver({
       variables: {
         idTarea: tarea.tar_id,
@@ -246,12 +184,7 @@ const DetalleTarea = () => {
         layout="vertical"
         onFinish={onFinish}
         footer={
-          <Button
-            block
-            type="submit"
-            color="primary"
-            size="large"
-          >
+          <Button block type="submit" color="primary" size="large">
             Guardar
           </Button>
         }
@@ -261,23 +194,14 @@ const DetalleTarea = () => {
           name="cli_id"
           initialValue={{ label: tarea.cli_nombre, id: tarea.cli_id }}
         >
-          {clientes &&
-            clientes.map((cliente) => (
-              <>
-                {buscador !== "" ? (
-                  <div className="div_clienteSelect_btn">
-                    <input
-                      className="select_nueva_tarea input_cliente"
-                      type="text"
-                      value={cliente.cli_nombre}
-                      readOnly={true}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </>
-            ))}
+          <div className="div_clienteSelect_btn">
+            <input
+              className="select_nueva_tarea input_cliente"
+              type="text"
+              value={tarea.cli_nombre}
+              readOnly={true}
+            />
+          </div>
         </Form.Item>
         <Form.Item
           label="Asunto"
@@ -286,32 +210,24 @@ const DetalleTarea = () => {
         >
           <TextArea autoSize={true} />
         </Form.Item>
-        <Form.Item label="Tipo de Tarea" name="tip_id">
+        <Form.Item
+          label="Tipo de Tarea"
+          name="tip_id"
+          initialValue={{ label: tarea.tip_desc, value: tarea.tip_id }}
+        >
           <Select
             className="select_nueva_tarea"
-            defaultValue={{ label: tarea.tip_desc, value: tarea.tip_id }}
+            // defaultValue={{ label: tarea.tip_desc, value: tarea.tip_id }}
             options={
               tiposTareas &&
               tiposTareas.map((tipoTarea) => ({
                 label: tipoTarea.tip_desc,
                 value: tipoTarea.tip_id,
+                key: tipoTarea.tip_id
               }))
             }
           />
         </Form.Item>
-        {/* <Form.Item label="Fuente" name="ori_id">
-          <Select
-            className="select_nueva_tarea"
-            defaultValue={{ label: tarea.ori_desc, value: tarea.ori_id }}
-            options={
-              tiposOrigenes &&
-              tiposOrigenes.map((tipoOrigen) => ({
-                label: tipoOrigen.ori_desc,
-                value: tipoOrigen.ori_id,
-              }))
-            }
-          />
-        </Form.Item> */}
         <div
           style={{
             display: "flex",
@@ -340,18 +256,15 @@ const DetalleTarea = () => {
             <Form.Item
               label="Hora"
               name="tar_horavencimiento"
-              initialValue={moment(
-                tarea.tar_horavencimiento,
-                "HH:mm:ss"
-              ).format("LT")}
+              initialValue={handleHora(hora)}
             >
-              <input className="input-fechaHora" type="time" />
+              <input className="input-fechaHora" type="time"/>
             </Form.Item>
           </div>
         </div>
         <Form.Item label="Nota" name="not_desc">
           <Note
-            editValue={tarea.not_desc || ""}
+            editValue={tarea.not_desc === "<p><br></p>" ? null : tarea.not_desc}
             width="100%"
             height="100%"
           ></Note>

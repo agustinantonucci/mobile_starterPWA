@@ -3,7 +3,7 @@ import MainLayout from "../Components/ui/layout/MainLayout";
 
 const ClientesView = () => {
   return (
-    <MainLayout>
+    <MainLayout modo="sinOp">
       <Clientes />
     </MainLayout>
   );

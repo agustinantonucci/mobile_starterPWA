@@ -43,7 +43,6 @@ const Clientes = () => {
     }
   }, [data]);
 
-
   return (
     <div style={{ textAlign: "start" }}>
       <List

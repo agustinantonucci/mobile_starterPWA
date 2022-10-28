@@ -2,7 +2,8 @@
 
 .contenedor-cliente-individual {
   height: calc(100% - 95px);
-  width: 100vw;
+  width: 100%;
+  max-width: 600px;
   position: fixed;
 }
 
@@ -19,10 +20,6 @@
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
-
-/* .capsule_fix {
-  position: fixed;
-} */
 
 .div_lista_l .swipe_clienteTarea{
   margin-bottom: -6px;

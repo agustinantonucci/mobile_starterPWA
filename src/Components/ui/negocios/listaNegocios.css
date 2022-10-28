@@ -10,8 +10,8 @@
 
 .card-negocio {
     background-color: white;
-    margin: 1vh 2vw 1vh 2vw;
-    padding: 0px 2vw;
+    margin: 8px;
+    padding: 0px 8px;
     border-radius: 2px;
 }
 
@@ -24,7 +24,7 @@
     font-size: 1.2rem;
     line-height: 1rem;
     text-overflow: ellipsis;
-    padding: 1vh 0px 0px 0vw;
+    padding: 8px 0px 0px 0px;
     margin: 1px;
 }
 
@@ -32,7 +32,7 @@
     font-size: 0.8rem;
     line-height: 1.4rem;
     text-overflow: ellipsis;
-    padding: 1vh 0px 0px 0vw;
+    padding: 8px 0px 0px 0vw;
     margin: 0px;
     text-transform: uppercase;
     color: #56b43c;
@@ -44,8 +44,7 @@
 
 .card-negocio-footer{
     width: 100%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 8px 0px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -63,10 +62,8 @@
 .importe-iconos {
     display: flex;
     flex-direction: row;
-    /* flex-wrap: wrap; */
     font-size: 1.1rem;
     justify-self: end;
-    padding-right: 1rem;
     color: rgb(0, 179, 60);
 }
 

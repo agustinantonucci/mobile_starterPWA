@@ -5,7 +5,6 @@ import ListaTarea from "../listaTareas/ListaTarea";
 
 export const TareasSemanaProxima = ({tareasParametro, error, loading}) => {
   const [tareas, setTareas] = useState();
-  const [estado ] = useState(1);
 
   const ordenarDatos = (tareas) => {
     let tareasOrdenadas;

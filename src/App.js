@@ -23,12 +23,15 @@ const App = () => {
   const [cargando, setCargando] = useState(false);
   const [note, setNote] = useState();
   const [pollTareas, setPollTareas] = useState();
+  const [pollTareasClientes, setPollTareasClientes] = useState();
 
   useEffect(() => {
+
     getDataInStorage("userInfo").then((res) => {
       if (res) {
         setUserData(res);
         setUserId(res.idUsuario);
+
       } else {
         setUserData({});
       }
@@ -39,8 +42,8 @@ const App = () => {
     } else {
       setPlataforma("OTRO");
     }
-  }, []);
-
+  }, [])
+  
   return (
     <AuthProvider>
       <ApolloProvider client={Client}>
@@ -58,7 +61,7 @@ const App = () => {
               tareas,
               setTareas,
               plataforma,
-              userId,
+              userId, 
               setUserId,
               cargando,
               setCargando,
@@ -66,6 +69,8 @@ const App = () => {
               setNote,
               pollTareas,
               setPollTareas,
+              pollTareasClientes, 
+              setPollTareasClientes
             }}
           >
             <AppRouter />

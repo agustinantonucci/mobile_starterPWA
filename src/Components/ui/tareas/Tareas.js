@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
@@ -17,7 +18,7 @@ import { TareasVencidas } from "../tareasVencidas/TareasVencidas";
 import { GET_TAREAS_MOBILE } from "../../../graphql/queries/TareaMobile";
 
 const Tareas = () => {
-  const { tareas, setTareas, userId, setPollTareas } =
+  const { tareas, setTareas, userId, setPollTareas, pollTareas } =
     useContext(GlobalContext);
 
   const [tareasCalendario, setTareasCalendario] = useState();
@@ -25,46 +26,39 @@ const Tareas = () => {
 
   /*Estados de consulta */
   const [filtroFecha, setFiltroFecha] = useState(moment().format("YYYY-MM-DD"));
-  const [estado, setEstado] = useState(1);
+  // const [estado, setEstado] = useState(1);
   const [tareasMobile, setTareasMobile] = useState();
-
-  // const { loading, error, data, startPolling, stopPolling } = useQuery(GET_TAREAS, {
-  //   variables: {
-  //     idUsuario: userId,
-  //     filtroFecha: "date",
-  //     fecha: filtroFecha,
-  //     estado: estado,
-  //     idUsuarioFiltro: "",
-  //     idClienteFiltro: null
-  //   },
-  // });
-
-  const {
-    data: dataMobile,
-    error: errorMobile,
-    loading: loadingMobile,
-  } = useQuery(GET_TAREAS_MOBILE, {
-    variables: {
-      idUsuario: userId,
-    },
-  });
 
   const {
     data: dataCalendario,
     error,
     loading,
+    startPolling, 
+    stopPolling
   } = useQuery(GET_TAREAS_CALENDARIO, {
     variables: {
       idUsuario: userId,
     },
   });
 
+  const {
+    data: dataMobile,
+    error: errorMobile,
+    loading: loadingMobile,
+    startPolling: startPollingMobile, 
+    stopPolling: stopPollingMobile
+  } = useQuery(GET_TAREAS_MOBILE, {
+    variables: {
+      idUsuario: userId,
+    },
+  });
+
   const ordenarDatos = (tareasBasico, filtroFecha) => {
-    filtroFecha = moment(filtroFecha, "YYYY-MM-DD").format("DD/MM/YYYY")
+    let fecha = moment(filtroFecha, "YYYY-MM-DD").format("DD/MM/YYYY");
     let tareasOrdenadas;
     if (tareasBasico) {
       tareasBasico = tareasBasico.filter(
-        (tarea) => tarea.fechavencimiento == filtroFecha
+        (tarea) => tarea.fechavencimiento === fecha
       );
       tareasOrdenadas = tareasBasico.sort(function (a, b) {
         return (
@@ -80,34 +74,30 @@ const Tareas = () => {
     }
   };
 
-  // useEffect(() => {
-
-  //   setPollTareas({inicial:startPolling, stop:stopPolling});
-
-  //   // if (data) {
-  //   //   ordenarDatos(JSON.parse(data.getTareasIframeResolver));
-
-  //   //   console.log("getTareas: ",JSON.parse(data.getTareasIframeResolver));
-  //   // }
-
-  //   if (dataCalendario) {
-
-  //     ordenarDatos(JSON.parse(dataCalendario.getTareasParaCalendarioIframeResolver).data);
-
-  //     setTareasCalendario(
-  //       JSON.parse(dataCalendario.getTareasParaCalendarioIframeResolver)
-  //         .fechasVenc
-  //     );
-  //     console.log("getTareasParaCalendario: ",JSON.parse(dataCalendario.getTareasParaCalendarioIframeResolver));
-
-  //   }
-  // }, [dataCalendario]);
-
   const handleChange = (val) => {
     setFiltroFecha(moment(val).format("YYYY-MM-DD"));
   };
 
-  useEffect(() => {}, [activeKey]);
+  useEffect(() => {
+    setPollTareas({inicial:startPolling, stop:stopPolling});
+    if (dataCalendario) {
+      if(JSON.parse(dataCalendario.getTareasPropiasMobileResolver)){
+        ordenarDatos(JSON.parse(dataCalendario.getTareasPropiasMobileResolver).tareasPropiasPorFecha,
+          filtroFecha
+        );
+        setTareasCalendario(
+          JSON.parse(dataCalendario.getTareasPropiasMobileResolver).fechasVenc
+        );
+      }
+    }
+  }, [dataCalendario, filtroFecha]);
+
+  useEffect(() => {
+    startPollingMobile(1000);
+    setTimeout(() => {
+      stopPollingMobile();
+    }, 1000);
+  }, [dataCalendario])
 
   useEffect(() => {
     if (dataMobile) {
@@ -116,17 +106,8 @@ const Tareas = () => {
   }, [dataMobile]);
 
   useEffect(() => {
-    if (dataCalendario) {
-      ordenarDatos(
-        JSON.parse(dataCalendario.getTareasPropiasMobileResolver)
-          .tareasPropiasPorFecha,
-        filtroFecha
-      );
-      setTareasCalendario(
-        JSON.parse(dataCalendario.getTareasPropiasMobileResolver).fechasVenc
-      );
-    }
-  }, [dataCalendario, filtroFecha]);
+
+  }, [tareasMobile])
 
   return (
     <CapsuleTabs
@@ -182,7 +163,7 @@ const Tareas = () => {
         )}
       </CapsuleTabs.Tab>
 
-      <CapsuleTabs.Tab title="Semana" key="2">
+      <CapsuleTabs.Tab title="Semana" key="2" disabled={!tareasMobile}>
         {activeKey === "2" && (
           <TareasSemana
             tareasParametro={tareasMobile.tareasEstaSemana}
@@ -192,7 +173,7 @@ const Tareas = () => {
         )}
       </CapsuleTabs.Tab>
 
-      <CapsuleTabs.Tab title="Semana Prox." key="3">
+      <CapsuleTabs.Tab title="Semana Prox." key="3" disabled={!tareasMobile}>
         {activeKey === "3" && (
           <TareasSemanaProxima
             tareasParametro={tareasMobile.tareasProximaSemana}
@@ -202,7 +183,7 @@ const Tareas = () => {
         )}
       </CapsuleTabs.Tab>
 
-      <CapsuleTabs.Tab title="Vencido" key="4">
+      <CapsuleTabs.Tab title="Vencido" key="4" disabled={!tareasMobile}>
         {activeKey === "4" && (
           <TareasVencidas
             tareasParametro={tareasMobile.tareasVencidas}

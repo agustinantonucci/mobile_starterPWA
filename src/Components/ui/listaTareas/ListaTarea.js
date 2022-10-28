@@ -9,7 +9,7 @@ const ListaTarea = ({ itemListaTarea }) => {
   return (
     <div>
       {itemListaTarea.map((tarea) => (
-        <TareaNegocio tarea={tarea} origen="ListaTareas" />
+        <TareaNegocio tarea={tarea} origen="ListaTareas" key={tarea.tar_id}/>
       ))}
     </div>
   );

@@ -35,7 +35,7 @@ export const ArchivoTareaNegocio = ({ archivo, origen="", interno=false, display
           <p className="archivo-tarea-nombre">{archivo.up_filename}</p>
           <div className="archivo-tarea-linea-inferior">
             <p className="archivo-tarea-hora">
-              {fechaArchivoHandler(archivo.up_fechaupload)}
+              {archivo.up_fechaupload && fechaArchivoHandler(archivo.up_fechaupload)}
             </p>
             <p className="archivo-tarea-peso">{formatSize(archivo.up_size)}</p>
             <div className="archivo-tarea-item">

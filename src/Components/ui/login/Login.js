@@ -63,7 +63,6 @@ const Login = () => {
 
   return (
     <div className="vista_login_wrapper">
-      {/* <div className="vista_login_content1"></div> */}
       <div className="vista_login_content">
         <div className="img_content">
           <Image src={duo} width={150} height={150} />
@@ -141,7 +140,6 @@ const Login = () => {
           </Form>
         </div>
       </div>
-      {/* <div className="vista_login_content1"></div> */}
     </div>
   );
 };

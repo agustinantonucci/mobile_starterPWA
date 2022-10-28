@@ -51,7 +51,7 @@ const Note = ({ editValue, width, height }) => {
 
   return (
     <>
-      <div style={{display:"flex", flexDirection:"row", width: "100%", marginLeft:"6px"}}>
+      <div style={{display:"flex", flexDirection:"row", width: "98%", marginLeft:"6px"}}>
         <div style={{display:"flex", flexDirection:"column", width: "100%", height:"100%", marginBottom: "30px"}}>
           <div style={{ width: width }}>
             <div ref={quillRef} style={{ minHeight: height }} />

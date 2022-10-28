@@ -5,10 +5,10 @@ import ListaTarea from "../listaTareas/ListaTarea";
 
 export const TareasVencidas = ({tareasParametro, error, loading}) => {
   const [tareas, setTareas] = useState();
-  const [estado] = useState(1);
 
   const ordenarDatos = (tareas) => {
     let tareasOrdenadas;
+
     if (tareas) {
       tareasOrdenadas = tareas.sort(function (a, b) {
         return (
@@ -32,12 +32,11 @@ export const TareasVencidas = ({tareasParametro, error, loading}) => {
 
   return (
     <QueryResult loading={loading} error={error} data={tareas}>
-      {tareas && (
+      {tareas && 
         <div className="div_lista">
-          <ListaTarea itemListaTarea={tareas}>
-          </ListaTarea>
+          <ListaTarea itemListaTarea={tareas} />
         </div>
-      )}
+      }
     </QueryResult>
   );
 };
