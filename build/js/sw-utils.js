@@ -3,7 +3,7 @@ function actualizaCacheDinamico(dynamicCache, req, res) {
   if (res.ok) {
     console.log("actualizaCacheDinamico", req)
     return caches.open(dynamicCache).then((cache) => {
-      cache.put(req, res.clone());
+      // cache.put(req, res.clone());
       return res.clone();
     });
   } else {
