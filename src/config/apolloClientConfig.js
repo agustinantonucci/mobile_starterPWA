@@ -14,7 +14,7 @@ const Client = new ApolloClient({
 	cache: new InMemoryCache(),
 	link: new HttpLink({
 		// uri: `http://10.0.0.28:4002/graphql`
-		uri: "https://bf86-152-169-48-128.sa.ngrok.io/graphql"
+		uri: "https://8c79-152-169-48-128.sa.ngrok.io/graphql"
 		//uri: process.env.REACT_APP_APOLLO,
 		//uri: URL,
 		// uri: `http://beeapp.binamics.com.ar:4002`
