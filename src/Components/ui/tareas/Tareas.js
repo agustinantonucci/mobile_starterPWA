@@ -104,11 +104,7 @@ const Tareas = () => {
       setTareasMobile(JSON.parse(dataMobile.getTareasMobileResolver));
     }
   }, [dataMobile]);
-
-  useEffect(() => {
-
-  }, [tareasMobile])
-
+  
   return (
     <CapsuleTabs
       className="capsule_contenedor"

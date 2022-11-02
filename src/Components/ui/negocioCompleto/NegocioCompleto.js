@@ -93,12 +93,6 @@ export const NegocioCompleto = () => {
             </p>
           </div>
         )}
-        {/* <div className="negocio-completo-header-linea">
-          <FilterOutline />
-          <p className="negocio-completo-header-texto">{negocio.embudo}</p> 
-          <TagOutline style={{ marginLeft: "0px" }} />
-          <p className="negocio-completo-header-texto">{negocio.eta_id}</p>
-        </div> */}
         <div className="negocio-completo-header-linea">
           <p className="negocio-completo-header-fecha">
             {"Fecha de creacion: " +
@@ -171,12 +165,12 @@ export const NegocioCompleto = () => {
         </CapsuleTabs.Tab>
         <CapsuleTabs.Tab title="Planificado" key="2">
           {activeKey === "2" && (
-            <NegocioPlanificado neg_id={negocio} />
+            <NegocioPlanificado negocio={negocio} />
           )}
         </CapsuleTabs.Tab>
         <CapsuleTabs.Tab title="Completado" key="3">
           {activeKey === "3" && (
-            <NegocioCompletado neg_id={negocio} />
+            <NegocioCompletado negocio={negocio} />
           )}
         </CapsuleTabs.Tab>
       </CapsuleTabs>

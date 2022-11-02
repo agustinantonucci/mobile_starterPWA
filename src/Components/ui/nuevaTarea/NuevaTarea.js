@@ -20,6 +20,8 @@ const NuevaTarea = () => {
   const [idSelector, setIdSelector] = useState();
 
   const [clientes, setClientes] = useState([]);
+  const [clienteSelect, setClienteSelect] = useState();
+  const [alertaCliente, setAlertaCliente] = useState(false);
   const { userId, pollTareas } = useContext(GlobalContext);
 
   //TODO INICIO SECCION DE ELEGIR CLIENTE
@@ -47,7 +49,14 @@ const NuevaTarea = () => {
     }
   }, [data]);
 
-  const handleSelect = (value) => {
+  const handleSelect = (value, cli_id) => {
+    if (cli_id) {
+      setClienteSelect(cli_id);
+      setAlertaCliente(false);
+    } else {
+      setAlertaCliente(true);
+    }
+
     setBuscador(value.target.value);
 
     if (ocultarC === true) {
@@ -60,15 +69,10 @@ const NuevaTarea = () => {
   };
 
   const handleLimpiar = (value) => {
-    if (limpiar === false) {
-      setLimpiar(true);
-      setOcultarC(false);
-    }
-    if (limpiar === true) {
-      setLimpiar(false);
-      setOcultarC(false);
-    }
-
+    setLimpiar(!limpiar);
+    setOcultarC(false);
+    setClienteSelect();
+    setAlertaCliente(true);
     setBuscador("");
   };
   //TODO FIN SECCION DE ELEGIR CLIENTE
@@ -104,6 +108,7 @@ const NuevaTarea = () => {
     {
       label: (
         <div
+          key={1}
           className={
             idSelector === 1 ? "selector-alta seleccionado" : "selector-alta"
           }
@@ -116,6 +121,7 @@ const NuevaTarea = () => {
     {
       label: (
         <div
+          key={2}
           className={
             idSelector === 2 ? "selector-media seleccionado" : "selector-media"
           }
@@ -128,6 +134,7 @@ const NuevaTarea = () => {
     {
       label: (
         <div
+          key={3}
           className={
             idSelector === 3 ? "selector-baja seleccionado" : "selector-baja"
           }
@@ -165,6 +172,10 @@ const NuevaTarea = () => {
   });
 
   const handleFormSubmit = (values) => {
+    if (!clienteSelect) {
+      return setAlertaCliente(true);
+    }
+
     const inputTarea = {
       tar_asunto: values.tar_asunto,
       tar_vencimiento: values.tar_vencimiento,
@@ -172,7 +183,7 @@ const NuevaTarea = () => {
       ori_id: values.ori_id.value,
       est_id: 1,
       usu_id: userId,
-      cli_id: Number(clientes[0].cli_id),
+      cli_id: Number(clienteSelect),
       ale_id: null,
       tar_alertanum: null,
       tip_id: values.tip_id.value,
@@ -196,12 +207,12 @@ const NuevaTarea = () => {
   };
 
   const handleHora = (hora) => {
-    let horaFormato = hora
-    if(hora.length<5) {
+    let horaFormato = hora;
+    if (hora.length < 5) {
       horaFormato = "0" + hora;
-    } 
+    }
     return horaFormato;
-  }
+  };
   //* FIN SECCION CARGAR UNA NUEVA TAREA
 
   return (
@@ -215,14 +226,24 @@ const NuevaTarea = () => {
           </Button>
         }
       >
-        <Form.Item
-          label="Cliente"
-          name="cli_id"
-          className="nueva_tarea_buscador_cliente"
+        <div
+          style={{
+            padding: "12px 0px",
+            textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+          }}
         >
+          <span
+            style={{ marginBottom: "4px", fontSize: "15px", display: "flex" }}
+          >
+            <p style={{ color: "#ff3141" }}>*</p>
+            <p style={{ color: "#00b33c" }}>Cliente</p>
+          </span>
           {ocultarC !== true ? (
             <input
-              className="select_nueva_tarea input_cliente"
+              className="input-cliente-nueva-tarea"
               placeholder="Ingrese Cliente"
               type="search"
               autoComplete="off"
@@ -236,10 +257,11 @@ const NuevaTarea = () => {
                 {buscador !== "" ? (
                   <div className="div_clienteSelect_btn" key={cliente.cli_id}>
                     <input
-                      className="select_nueva_tarea input_cliente"
+                      className="input-cliente-nueva-tarea input-cliente-seleccionado"
                       type="text"
-                      onClick={(value) => handleSelect(value)}
+                      onClick={(value) => handleSelect(value, cliente.cli_id)}
                       defaultValue={cliente.cli_nombre}
+                      key={cliente.cli_id}
                     />
                     {ocultarC && (
                       <Button
@@ -255,15 +277,43 @@ const NuevaTarea = () => {
                 )}
               </>
             ))}
-        </Form.Item>
-        <Form.Item label="Asunto" name="tar_asunto">
+          {alertaCliente && (
+            <span
+              style={{
+                fontSize: "13px",
+                color: "#ff3141",
+                alignSelf: "center",
+                marginTop: "4px",
+              }}
+            >
+              Por favor ingrese Cliente
+            </span>
+          )}
+        </div>
+        <Form.Item
+          label="Asunto"
+          name="tar_asunto"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
           <TextArea
             className="detalleTarea"
             autoSize={true}
             placeholder="Detalle de Tarea"
           ></TextArea>
         </Form.Item>
-        <Form.Item label="Tipo de Tarea" name="tip_id">
+        <Form.Item
+          label="Tipo de Tarea"
+          name="tip_id"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
           <Select
             className="select_nueva_tarea"
             placeholder="Seleccione Tipo de Tarea"
@@ -278,7 +328,15 @@ const NuevaTarea = () => {
             // onChange={handleSelectTT}
           />
         </Form.Item>
-        <Form.Item label="Fuente" name="ori_id">
+        <Form.Item
+          label="Fuente"
+          name="ori_id"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
           <Select
             className="select_nueva_tarea select_fuente"
             placeholder="Seleccione Fuente"
@@ -318,12 +376,24 @@ const NuevaTarea = () => {
               width: "50%",
             }}
           >
-            <Form.Item label="Hora" name="tar_horavencimiento" initialValue={handleHora(moment().format("LT"))}>
+            <Form.Item
+              label="Hora"
+              name="tar_horavencimiento"
+              initialValue={handleHora(moment().format("LT"))}
+            >
               <input className="input-fechaHora" type="time" />
             </Form.Item>
           </div>
         </div>
-        <Form.Item label="Prioridad" name="pri_id">
+        <Form.Item
+          label="Prioridad"
+          name="pri_id"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
           <Selector
             style={{
               "--border-radius": "10px",

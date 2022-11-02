@@ -65,7 +65,7 @@
 
 .div_contacto_lista {
     display: block;
-    overflow-y: scroll;
+    overflow: auto;
     scroll-behavior: smooth;
     width: 100%;
     height: 100%;

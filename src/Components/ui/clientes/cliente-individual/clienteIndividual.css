@@ -10,14 +10,14 @@
 .div_lista_l {
   display: block;
   height: calc(100% - 45px);
-  overflow-y: scroll;
+  overflow: auto;
   scroll-behavior: smooth;
 }
 
 .div_lista_negocios {
   display: block;
   height: 100%;
-  overflow-y: scroll;
+  overflow: auto;
   scroll-behavior: smooth;
 }
 

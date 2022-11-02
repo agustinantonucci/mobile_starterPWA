@@ -11,14 +11,13 @@ import {
 } from "antd-mobile-icons";
 import { useQuery } from "@apollo/client";
 import {
-  GET_HISTORIAL_POR_NEGOCIO,
   GET_TIMELINE_POR_NEGOCIO,
 } from "../../../graphql/queries/HistorialNegocio";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import QueryResult from "../../queryResult/QueryResult";
 
-export const NegocioPlanificado = ({ neg_id }) => {
+export const NegocioPlanificado = ({ negocio }) => {
   const [timeline, setTimeline] = useState();
 
   const {
@@ -27,7 +26,7 @@ export const NegocioPlanificado = ({ neg_id }) => {
     data: dataTimeline,
   } = useQuery(GET_TIMELINE_POR_NEGOCIO, {
     variables: {
-      idNegocio: parseInt(neg_id),
+      idNegocio: parseInt(negocio.neg_id),
     },
   });
 

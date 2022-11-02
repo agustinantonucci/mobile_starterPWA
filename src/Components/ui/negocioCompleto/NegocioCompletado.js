@@ -18,18 +18,18 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import QueryResult from "../../queryResult/QueryResult";
 
-export const NegocioCompletado = ({ neg_id }) => {
+export const NegocioCompletado = ({ negocio }) => {
   const [timeline, setTimeline] = useState();
 
   const { loading, error, data } = useQuery(GET_HISTORIAL_POR_NEGOCIO, {
     variables: {
-      idNegocio: parseInt(neg_id),
+      idNegocio: parseInt(negocio.neg_id),
     },
   });
 
   const { data: dataTimeline } = useQuery(GET_TIMELINE_POR_NEGOCIO, {
     variables: {
-      idNegocio: parseInt(neg_id),
+      idNegocio: parseInt(negocio.neg_id),
     },
   });
 
