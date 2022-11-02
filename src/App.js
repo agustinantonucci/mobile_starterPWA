@@ -24,6 +24,8 @@ const App = () => {
   const [note, setNote] = useState();
   const [pollTareas, setPollTareas] = useState();
   const [pollTareasClientes, setPollTareasClientes] = useState();
+  const [tabTareasActivo, setTabTareasActivo] = useState("1");
+  const [tabClienteActivo, setTabClienteActivo] = useState("1");
 
   useEffect(() => {
 
@@ -70,7 +72,11 @@ const App = () => {
               pollTareas,
               setPollTareas,
               pollTareasClientes, 
-              setPollTareasClientes
+              setPollTareasClientes,
+              tabTareasActivo,
+              setTabTareasActivo,
+              tabClienteActivo,
+              setTabClienteActivo,
             }}
           >
             <AppRouter />

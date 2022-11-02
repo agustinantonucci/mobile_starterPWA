@@ -13,12 +13,11 @@ export const ArchivoTareaNegocio = ({ archivo, origen="", interno=false, display
   }
   const formatSize = (size) => {
     const sizeFile = Number(size);
-    //
-    let template;
+    
     if (size >= 1024) {
-      return (template = `${(sizeFile / 1024).toFixed(0)} kb`);
+      return (`${(sizeFile / 1024).toFixed(0)} kb`);
     } else {
-      return (template = `${sizeFile.toFixed(0)} bytes`);
+      return (`${sizeFile.toFixed(0)} bytes`);
     }
   };
 

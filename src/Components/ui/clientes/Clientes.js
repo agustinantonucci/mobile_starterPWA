@@ -24,7 +24,7 @@ const Clientes = () => {
     });
   };
 
-  const { loading, error, data } = useQuery(GET_CLIENTE, {
+  const { data } = useQuery(GET_CLIENTE, {
     variables: {
       input: inputBuscador.length > 2 ? inputBuscador : "",
       idUsuario: userId,

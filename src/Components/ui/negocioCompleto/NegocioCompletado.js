@@ -51,9 +51,7 @@ export const NegocioCompletado = ({ negocio }) => {
     linea = linea.filter((tarea) => tarea.est_id !== 1);
 
     historial.map((historia) => {
-      if (!historia.his_detalle.startsWith("###")) {
-        return linea.push(historia);
-      }
+      return !historia.his_detalle.startsWith("###") && linea.push(historia);
     });
 
     let lineaOrdenada;
@@ -129,12 +127,18 @@ export const NegocioCompletado = ({ negocio }) => {
                   return (
                     <Step
                       key={tarea.his_id}
-                      description={tarea.his_detalle.startsWith("<p>") ?
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: tarea.his_detalle,
-                          }}
-                        ></div> : <span className="detailItem">{tarea.his_detalle}</span>
+                      description={
+                        tarea.his_detalle.startsWith("<p>") ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: tarea.his_detalle,
+                            }}
+                          ></div>
+                        ) : (
+                          <span className="detailItem">
+                            {tarea.his_detalle}
+                          </span>
+                        )
                       }
                     />
                   );

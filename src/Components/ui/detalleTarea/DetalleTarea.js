@@ -20,14 +20,14 @@ const DetalleTarea = () => {
 
   const history = useHistory();
 
-  const [tarea, setTarea] = useState(location.state);
+  const [tarea] = useState(location.state);
 
   const [idSelector, setIdSelector] = useState(tarea.pri_id);
 
-  const [file, setFile] = useState({});
+  const [file] = useState({});
   const [fList, setFlist] = useState([]);
 
-  const [hora, setHora] = useState(moment(
+  const [hora] = useState(moment(
     tarea.tar_horavencimiento,
     "HH:mm:ss"
   ).format("LT"))

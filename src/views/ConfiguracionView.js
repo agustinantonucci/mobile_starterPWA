@@ -3,7 +3,7 @@ import MainLayout from "../Components/ui/layout/MainLayout";
 
 const ConfiguracionView = () => {
   return (
-    <MainLayout>
+    <MainLayout modo="sinOp">
       <Configuracion />
     </MainLayout>
   );

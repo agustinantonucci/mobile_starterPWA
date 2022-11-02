@@ -3,7 +3,7 @@ import { NegocioCompleto } from "../Components/ui/negocioCompleto/NegocioComplet
 
 const NegocioCompletoView = () => {
   return (
-    <MainLayout>
+    <MainLayout modo="sinOp">
       <NegocioCompleto />
     </MainLayout>
   );

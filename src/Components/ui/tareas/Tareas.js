@@ -18,15 +18,14 @@ import { TareasVencidas } from "../tareasVencidas/TareasVencidas";
 import { GET_TAREAS_MOBILE } from "../../../graphql/queries/TareaMobile";
 
 const Tareas = () => {
-  const { tareas, setTareas, userId, setPollTareas, pollTareas } =
+  const { tareas, setTareas, userId, setPollTareas, tabTareasActivo, setTabTareasActivo } =
     useContext(GlobalContext);
 
   const [tareasCalendario, setTareasCalendario] = useState();
-  const [activeKey, setActiveKey] = useState("1");
 
   /*Estados de consulta */
   const [filtroFecha, setFiltroFecha] = useState(moment().format("YYYY-MM-DD"));
-  // const [estado, setEstado] = useState(1);
+
   const [tareasMobile, setTareasMobile] = useState();
 
   const {
@@ -104,16 +103,20 @@ const Tareas = () => {
       setTareasMobile(JSON.parse(dataMobile.getTareasMobileResolver));
     }
   }, [dataMobile]);
+
+  useEffect(() => {
+
+  }, [tareasMobile])
   
   return (
     <CapsuleTabs
       className="capsule_contenedor"
-      defaultActiveKey="1"
-      onChange={(v) => setActiveKey(v)}
+      defaultActiveKey={tabTareasActivo}
+      onChange={(v) => setTabTareasActivo(v)}
     >
       {/* PESTAÑA TAREAS HOY */}
       <CapsuleTabs.Tab title={<CalendarOutline />} key="1">
-        {activeKey === "1" && (
+        {tabTareasActivo === "1" && (
           <>
             <div>
               <Calendar
@@ -160,31 +163,31 @@ const Tareas = () => {
       </CapsuleTabs.Tab>
 
       <CapsuleTabs.Tab title="Semana" key="2" disabled={!tareasMobile}>
-        {activeKey === "2" && (
+        {tabTareasActivo === "2" && (
           <TareasSemana
-            tareasParametro={tareasMobile.tareasEstaSemana}
-            error={errorMobile}
-            loading={loadingMobile}
+            tareasParametro={tareasMobile && tareasMobile.tareasEstaSemana}
+            error={errorMobile && errorMobile}
+            loading={loadingMobile && loadingMobile}
           />
         )}
       </CapsuleTabs.Tab>
 
       <CapsuleTabs.Tab title="Semana Prox." key="3" disabled={!tareasMobile}>
-        {activeKey === "3" && (
+        {tabTareasActivo === "3" && (
           <TareasSemanaProxima
-            tareasParametro={tareasMobile.tareasProximaSemana}
-            error={errorMobile}
-            loading={loadingMobile}
+            tareasParametro={tareasMobile && tareasMobile.tareasProximaSemana}
+            error={errorMobile && errorMobile}
+            loading={loadingMobile && loadingMobile}
           />
         )}
       </CapsuleTabs.Tab>
 
       <CapsuleTabs.Tab title="Vencido" key="4" disabled={!tareasMobile}>
-        {activeKey === "4" && (
+        {tabTareasActivo === "4" && (
           <TareasVencidas
-            tareasParametro={tareasMobile.tareasVencidas}
-            error={errorMobile}
-            loading={loadingMobile}
+            tareasParametro={tareasMobile && tareasMobile.tareasVencidas}
+            error={errorMobile && errorMobile}
+            loading={loadingMobile && loadingMobile}
           />
         )}
       </CapsuleTabs.Tab>
