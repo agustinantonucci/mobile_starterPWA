@@ -1,5 +1,6 @@
 // Guardar  en el cache dinamico
 function actualizaCacheDinamico(dynamicCache, req, res) {
+  console.log(`REQ: ${req}, RES: ${res}`);
   if (res.ok) {
     console.log("actualizaCacheDinamico", req)
     return caches.open(dynamicCache).then((cache) => {
@@ -27,7 +28,7 @@ function actualizaCacheStatico(staticCache, req, APP_SHELL_INMUTABLE) {
   }
 }
 
-//Network with caceh fallback then update
+//Network with cache fallback then update
 // const manejoApiMensajes = (cacheName, req) => {
 //   if (req.clone().method === "POST") {
 //     //Posteo de un nuevo mensaje
