@@ -68,7 +68,7 @@ self.addEventListener("fetch", (e) => {
   let respuesta;
   //si es una cosulta a la api
   if (!e.request.url.startsWith("http")) {
-    console.log("Peticion no http: ", e.request);
+    console.log("Peticion no http: ", e.request.url);
     // respuesta = manejoApiMensajes(DYNAMIC_CACHE, e.request);
   } else {
     respuesta = caches.match(e.request).then((res) => {
