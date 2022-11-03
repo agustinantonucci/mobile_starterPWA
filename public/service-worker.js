@@ -71,7 +71,8 @@ self.addEventListener("fetch", (e) => {
   //si es una cosulta a la api
   if (!e.request.url.startsWith("http")) {
     console.log("Peticion no http: ", e.request.url);
-    // respuesta = manejoApiTareas(DYNAMIC_CACHE, e.request);
+    respuesta = manejoApiTareas(DYNAMIC_CACHE, e.request);
+    console.log("Respuesta manejoApiTareas", respuesta);
   } else {
     respuesta = caches.match(e.request).then((res) => {
       if (res) {
