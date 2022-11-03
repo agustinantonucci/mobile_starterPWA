@@ -1,6 +1,5 @@
 // Guardar  en el cache dinamico
 function actualizaCacheDinamico(dynamicCache, req, res) {
-  // console.log(`REQ: ${req}, RES: ${res}`);
   if (res.ok) {
     console.log("actualizaCacheDinamico", req)
     return caches.open(dynamicCache).then((cache) => {

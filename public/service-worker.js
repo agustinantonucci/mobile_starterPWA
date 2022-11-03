@@ -10,14 +10,10 @@ const INMUTABLE_CACHE = "inmutable-v1";
 
 const APP_SHELL = [
   "/",
+  "/app",
   "/index.html",
   "/js/sw-db.js",
   "/js/sw-utils.js",
-  // "/static/css/main.887216b7.css",
-  // "/static/css/main.887216b7.map.css",
-  // "/static/js/main.60bec065.js",
-  // "/static/js/main.60bec065.js.LICENSE.txt",
-  // "/static/js/main.60bec065.js.map",
   "/static/media/logo-crm-prod.a500d60ddd2ba3ca47cf7a666bbc8631.svg",
   "/asset-manifest.json",
   "/manifest.json",
@@ -73,6 +69,7 @@ self.addEventListener("fetch", (e) => {
   let respuesta;
   //si es una cosulta a la api
   if (!e.request.url.startsWith("http")) {
+    console.log("Peticion no http: ", e.request.url);
     // respuesta = manejoApiMensajes(DYNAMIC_CACHE, e.request);
   } else {
     respuesta = caches.match(e.request).then((res) => {
@@ -93,16 +90,16 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(respuesta);
 });
 
-// self.addEventListener("sync", (e) => {
-//   console.log("SW: Sync");
+self.addEventListener("sync", (e) => {
+  console.log("SW: Sync");
 
-//   // normalmente voy a tratar muchos registros distintos entonces aplicaría un switch
+  // normalmente voy a tratar muchos registros distintos entonces aplicaría un switch
 
-//   if (e.tag === "nuevo-post") {
-//     // postear a DB cuando hay conexión
+  if (e.tag === "nuevo-post") {
+    // postear a DB cuando hay conexión
 
-//     const respuesta = postearMensajes();
+    const respuesta = postearMensajes();
 
-//     e.waitUntil(respuesta);
-//   }
-// });
+    e.waitUntil(respuesta);
+  }
+});
