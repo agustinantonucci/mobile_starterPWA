@@ -4,6 +4,9 @@ function actualizaCacheDinamico(dynamicCache, req, res) {
     console.log("actualizaCacheDinamico", req)
     return caches.open(dynamicCache).then((cache) => {
       // cache.put(req, res.clone());
+      if(req.method === "POST") {
+        console.log("Es un post, respuesta: ", res.clone());
+      }
       return res.clone();
     });
   } else {
@@ -27,35 +30,35 @@ function actualizaCacheStatico(staticCache, req, APP_SHELL_INMUTABLE) {
   }
 }
 
-//Network with caceh fallback then update
-// const manejoApiMensajes = (cacheName, req) => {
-//   if (req.clone().method === "POST") {
-//     //Posteo de un nuevo mensaje
+//Network with cache fallback then update
+const manejoApiTareas = (cacheName, req) => {
+  if (req.clone().method === "POST") {
+    //Posteo de un nuevo tarea
 
-//     //Si el navegador soporta sync manager lo va a guardar en IndexedDB para luego sincronizarlo
-//     if (self.registration.sync) {
-//       return req
-//         .clone()
-//         .text()
-//         .then((body) => {
-//           const bodyObj = JSON.parse(body);
-//           return guardarMensaje(bodyObj);
-//         });
-//     } else {
-//       return fetch(req);
-//     }
-//   } else {
-//     return fetch(req)
-//       .then((res) => {
-//         if (res.ok) {
-//           actualizaCacheDinamico(cacheName, req, res.clone());
-//           return res.clone();
-//         } else {
-//           return caches.match(req);
-//         }
-//       })
-//       .catch((err) => {
-//         return caches.match(req);
-//       });
-//   }
-// };
+    //Si el navegador soporta sync manager lo va a guardar en IndexedDB para luego sincronizarlo
+    if (self.registration.sync) {
+      return req
+        .clone()
+        .text()
+        .then((body) => {
+          const bodyObj = JSON.parse(body);
+          return guardarTarea(bodyObj);
+        });
+    } else {
+      return fetch(req);
+    }
+  } else {
+    return fetch(req)
+      .then((res) => {
+        if (res.ok) {
+          actualizaCacheDinamico(cacheName, req, res.clone());
+          return res.clone();
+        } else {
+          return caches.match(req);
+        }
+      })
+      .catch((err) => {
+        return caches.match(req);
+      });
+  }
+};

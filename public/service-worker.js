@@ -71,7 +71,7 @@ self.addEventListener("fetch", (e) => {
   //si es una cosulta a la api
   if (!e.request.url.startsWith("http")) {
     console.log("Peticion no http: ", e.request.url);
-    // respuesta = manejoApiMensajes(DYNAMIC_CACHE, e.request);
+    // respuesta = manejoApiTareas(DYNAMIC_CACHE, e.request);
   } else {
     respuesta = caches.match(e.request).then((res) => {
       if (res) {
@@ -99,7 +99,7 @@ self.addEventListener("sync", (e) => {
   if (e.tag === "nuevo-post") {
     // postear a DB cuando hay conexión
 
-    const respuesta = postearMensajes();
+    const respuesta = postearTareas();
 
     e.waitUntil(respuesta);
   }

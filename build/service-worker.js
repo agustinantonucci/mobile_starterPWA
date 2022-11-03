@@ -17,7 +17,8 @@ const APP_SHELL = [
   "/static/media/logo-crm-prod.a500d60ddd2ba3ca47cf7a666bbc8631.svg",
   "/asset-manifest.json",
   "/manifest.json",
-  "/icon.png"
+  "/icon.png",
+  "/app/icon.png",
 ];
 
 const APP_SHELL_INMUTABLE = [
@@ -70,7 +71,7 @@ self.addEventListener("fetch", (e) => {
   //si es una cosulta a la api
   if (!e.request.url.startsWith("http")) {
     console.log("Peticion no http: ", e.request.url);
-    // respuesta = manejoApiMensajes(DYNAMIC_CACHE, e.request);
+    // respuesta = manejoApiTareas(DYNAMIC_CACHE, e.request);
   } else {
     respuesta = caches.match(e.request).then((res) => {
       if (res) {
@@ -86,20 +87,20 @@ self.addEventListener("fetch", (e) => {
       }
     });
   }
-  console.log(respuesta);
+  console.log("Respuesta: fetch sw",respuesta);
   e.respondWith(respuesta);
 });
 
-// self.addEventListener("sync", (e) => {
-//   console.log("SW: Sync");
+self.addEventListener("sync", (e) => {
+  console.log("SW: Sync");
 
-//   // normalmente voy a tratar muchos registros distintos entonces aplicaría un switch
+  // normalmente voy a tratar muchos registros distintos entonces aplicaría un switch
 
-//   if (e.tag === "nuevo-post") {
-//     // postear a DB cuando hay conexión
+  if (e.tag === "nuevo-post") {
+    // postear a DB cuando hay conexión
 
-//     const respuesta = postearMensajes();
+    const respuesta = postearTareas();
 
-//     e.waitUntil(respuesta);
-//   }
-// });
+    e.waitUntil(respuesta);
+  }
+});

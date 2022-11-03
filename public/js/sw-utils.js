@@ -31,34 +31,34 @@ function actualizaCacheStatico(staticCache, req, APP_SHELL_INMUTABLE) {
 }
 
 //Network with cache fallback then update
-// const manejoApiMensajes = (cacheName, req) => {
-//   if (req.clone().method === "POST") {
-//     //Posteo de un nuevo mensaje
+const manejoApiTareas = (cacheName, req) => {
+  if (req.clone().method === "POST") {
+    //Posteo de un nuevo tarea
 
-//     //Si el navegador soporta sync manager lo va a guardar en IndexedDB para luego sincronizarlo
-//     if (self.registration.sync) {
-//       return req
-//         .clone()
-//         .text()
-//         .then((body) => {
-//           const bodyObj = JSON.parse(body);
-//           return guardarMensaje(bodyObj);
-//         });
-//     } else {
-//       return fetch(req);
-//     }
-//   } else {
-//     return fetch(req)
-//       .then((res) => {
-//         if (res.ok) {
-//           actualizaCacheDinamico(cacheName, req, res.clone());
-//           return res.clone();
-//         } else {
-//           return caches.match(req);
-//         }
-//       })
-//       .catch((err) => {
-//         return caches.match(req);
-//       });
-//   }
-// };
+    //Si el navegador soporta sync manager lo va a guardar en IndexedDB para luego sincronizarlo
+    if (self.registration.sync) {
+      return req
+        .clone()
+        .text()
+        .then((body) => {
+          const bodyObj = JSON.parse(body);
+          return guardarTarea(bodyObj);
+        });
+    } else {
+      return fetch(req);
+    }
+  } else {
+    return fetch(req)
+      .then((res) => {
+        if (res.ok) {
+          actualizaCacheDinamico(cacheName, req, res.clone());
+          return res.clone();
+        } else {
+          return caches.match(req);
+        }
+      })
+      .catch((err) => {
+        return caches.match(req);
+      });
+  }
+};

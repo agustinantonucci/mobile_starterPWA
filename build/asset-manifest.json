@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "./static/css/main.887216b7.css",
-    "main.js": "./static/js/main.5ae53cc3.js",
+    "main.css": "./static/css/main.5878db1e.css",
+    "main.js": "./static/js/main.8c35b9db.js",
     "static/media/logo-crm-prod.svg": "./static/media/logo-crm-prod.a500d60ddd2ba3ca47cf7a666bbc8631.svg",
     "index.html": "./index.html",
-    "main.887216b7.css.map": "./static/css/main.887216b7.css.map",
-    "main.5ae53cc3.js.map": "./static/js/main.5ae53cc3.js.map"
+    "main.5878db1e.css.map": "./static/css/main.5878db1e.css.map",
+    "main.8c35b9db.js.map": "./static/js/main.8c35b9db.js.map"
   },
   "entrypoints": [
-    "static/css/main.887216b7.css",
-    "static/js/main.5ae53cc3.js"
+    "static/css/main.5878db1e.css",
+    "static/js/main.8c35b9db.js"
   ]
 }

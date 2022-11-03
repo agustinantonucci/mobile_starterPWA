@@ -2,16 +2,16 @@
 
 // import * as PouchDB from "pouchdb";
 
-const db = new PouchDB('mensajes');
+const db = new PouchDB('tareas');
 // import PouchDB from "pouchdb";
 
-// const db = new PouchDB("mensajes");
+// const db = new PouchDB("tareas");
 
-const guardarMensaje = (mensaje) => {
-  mensaje._id = new Date().toISOString();
+const guardarTarea= (tarea) => {
+  tarea._id = new Date().toISOString();
 
-  return db.put(mensaje).then(() => {
-    self.registration.sync.register("nuevo-post");
+  return db.put(tarea).then(() => {
+    self.registration.sync.register("nueva-tarea");
 
     const newResp = {
       ok: true,
@@ -22,9 +22,9 @@ const guardarMensaje = (mensaje) => {
   });
 };
 
-//Postear mensajes a la API
+//Postear tareas a la API
 
-// const postearMensajes = () => {
+// const postearTareas = () => {
 //   // Revisar posteos pendientes
 
 //   const posteos = [];
