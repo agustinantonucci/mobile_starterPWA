@@ -10,6 +10,7 @@ const INMUTABLE_CACHE = "inmutable-v1";
 
 const APP_SHELL = [
   "/",
+  "/app",
   "/index.html",
   "/js/sw-db.js",
   "/js/sw-utils.js",
