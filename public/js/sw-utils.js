@@ -1,7 +1,7 @@
 // Guardar  en el cache dinamico
 function actualizaCacheDinamico(dynamicCache, req, res) {
   if (res.ok) {
-    console.log("actualizaCacheDinamico", req.clone())
+    // console.log("actualizaCacheDinamico", req.clone())
     return caches.open(dynamicCache).then((cache) => {
       // cache.put(req, res.clone());
       if(req.method === "POST") {
