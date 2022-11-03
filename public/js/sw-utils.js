@@ -52,7 +52,7 @@ const manejoApiTareas = (cacheName, req) => {
     return fetch(req)
       .then((res) => {
         if (res.ok) {
-          actualizaCacheDinamico(cacheName, req, res.clone());
+          actualizaCacheDinamico(cacheName, req.clone(), res.clone());
           return res.clone();
         } else {
           return caches.match(req);
