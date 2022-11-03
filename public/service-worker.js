@@ -17,7 +17,8 @@ const APP_SHELL = [
   "/static/media/logo-crm-prod.a500d60ddd2ba3ca47cf7a666bbc8631.svg",
   "/asset-manifest.json",
   "/manifest.json",
-  "/icon.png"
+  "/icon.png",
+  "/app/icon.png",
 ];
 
 const APP_SHELL_INMUTABLE = [
@@ -86,7 +87,7 @@ self.addEventListener("fetch", (e) => {
       }
     });
   }
-  console.log(respuesta);
+  console.log("Respuesta: fetch sw",respuesta);
   e.respondWith(respuesta);
 });
 
