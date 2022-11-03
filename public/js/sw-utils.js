@@ -5,7 +5,7 @@ function actualizaCacheDinamico(dynamicCache, req, res) {
     return caches.open(dynamicCache).then((cache) => {
       // cache.put(req, res.clone());
       if(req.method === "POST") {
-        respuesta = manejoApiTareas(dynamicCache, req);
+        respuesta = manejoApiTareas(dynamicCache, req.clone());
         console.log("Es un post, respuesta: ", res.clone());
       }
       return res.clone();
