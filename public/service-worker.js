@@ -62,7 +62,6 @@ self.addEventListener("activate", (e) => {
       }
     });
   });
-
   e.waitUntil(respuesta);
 });
 
@@ -94,14 +93,10 @@ self.addEventListener("fetch", (e) => {
 
 self.addEventListener("sync", (e) => {
   console.log("SW: Sync");
-
   // normalmente voy a tratar muchos registros distintos entonces aplicaría un switch
-
   if (e.tag === "nuevo-post") {
     // postear a DB cuando hay conexión
-
     const respuesta = postearTareas();
-
     e.waitUntil(respuesta);
   }
 });
