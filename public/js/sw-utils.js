@@ -4,9 +4,10 @@ function actualizaCacheDinamico(dynamicCache, req, res) {
     // console.log("actualizaCacheDinamico", req.clone())
     return caches.open(dynamicCache).then((cache) => {
       // cache.put(req, res.clone());
-      if(req.clone().method === "POST") {
-        respuesta = manejoApiTareas(dynamicCache, req.clone());
-        console.log("Es un post, respuesta: ", res.clone());
+      let request = req.clone()
+      if(request.method === "POST") {
+        respuesta = manejoApiTareas(dynamicCache, request.clone());
+        console.log("Es un post, respuesta: ", request.clone());
       }
       return res.clone();
     });
@@ -19,15 +20,15 @@ function actualizaCacheDinamico(dynamicCache, req, res) {
 function actualizaCacheStatico(staticCache, req, APP_SHELL_INMUTABLE) {
   if (APP_SHELL_INMUTABLE.includes(req.url)) {
     // No hace falta actualizar el inmutable
-    // console.log('existe en inmutable', req.url );
+    console.log('existe en inmutable', req.url );
   } else {
-    // console.log('actualizando', req.url );
+    console.log('actualizando', req.url );
     // console.log(req);
     return fetch(req)
       .then((res) => {
         return actualizaCacheDinamico(staticCache, req, res);
       })
-      .catch(console.log);
+      .catch(error => "Error en fetch actualizaCacheStatico", console.log(error));
   }
 }
 
