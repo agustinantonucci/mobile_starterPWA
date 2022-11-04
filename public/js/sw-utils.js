@@ -1,10 +1,10 @@
 // Guardar  en el cache dinamico
 function actualizaCacheDinamico(dynamicCache, req, res) {
+  let request = req.clone()
   if (res.ok) {
     // console.log("actualizaCacheDinamico", req.clone())
     return caches.open(dynamicCache).then((cache) => {
       // cache.put(req, res.clone());
-      let request = req.clone()
       if(request.method === "POST") {
         respuesta = manejoApiTareas(dynamicCache, request.clone());
         console.log("Es un post, respuesta: ", request.clone());
