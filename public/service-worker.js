@@ -79,10 +79,10 @@ self.addEventListener("fetch", (e) => {
         actualizaCacheStatico(STATIC_CACHE, e.request, APP_SHELL_INMUTABLE);
         return res;
       } else {
-        console.log(e.request)
-        return fetch(e.request)
+        console.log(e.request.clone())
+        return fetch(e.request.clone())
           .then((newRes) => {
-            return actualizaCacheDinamico(DYNAMIC_CACHE, e.request, newRes);
+            return actualizaCacheDinamico(DYNAMIC_CACHE, e.request.clone(), newRes);
           })
           .catch(console.log);
       }
