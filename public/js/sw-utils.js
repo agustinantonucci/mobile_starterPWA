@@ -28,7 +28,7 @@ function actualizaCacheStatico(staticCache, req, APP_SHELL_INMUTABLE) {
       .then((res) => {
         return actualizaCacheDinamico(staticCache, req, res);
       })
-      .catch(error => "Error en fetch actualizaCacheStatico", console.log(error));
+      .catch("Error en fetch actualizaCacheStatico", console.log);
   }
 }
 
